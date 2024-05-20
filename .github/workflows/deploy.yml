@@ -27,3 +27,15 @@ jobs:
 
       - name: Verify pushed image
         run: docker pull ${{ secrets.DOCKER_USERNAME }}/ci-cd:latest
+
+      - name: Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_USERNAME }}/ci-cd:latest
+            docker stop webapp || true
+            docker rm webapp || true
+            docker run -d -p 3000:3000 --name webapp ${{ secrets.DOCKER_USERNAME }}/ci-cd:latest
