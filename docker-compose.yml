@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  web:
+    image: bhutoria/ci-cd
+    container_name: ci-cd
+    ports:
+      - "3000:3000"
